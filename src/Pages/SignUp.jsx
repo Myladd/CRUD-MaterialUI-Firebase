@@ -46,7 +46,6 @@ const SignUp = () => {
 
         console.log(values);
         console.log(email, password)
-        formikHelpers.resetForm();
     }
 
 

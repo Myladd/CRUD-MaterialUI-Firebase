@@ -2,14 +2,15 @@ import React, {useState} from 'react'
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
+import {NavLink, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {UserAuth} from "../Context/AuthContext";
 import ErrorToast from "../Components/Toast/ErrorToast";
 
 const SignIn = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const {signIn} = UserAuth()
     const [error, setError] = useState("")
+    const navigate = useNavigate()
 
     const initialValues = {
         email: "",
@@ -23,8 +24,16 @@ const SignIn = () => {
             .min(6, "Password should be minimum 6 characters long"),
     })
 
-    const onSubmit = () => {
-
+    const onSubmit = async (values, formikHelpers) => {
+        const {email, password} = values
+        try {
+            await signIn(email, password)
+            navigate('/Dashboard')
+        }catch (e) {
+            console.log(e.message)
+            setError(e.message)
+        }
+        formikHelpers.resetForm();
     }
 
 
@@ -53,6 +62,10 @@ const SignIn = () => {
         margin-bottom: 30px;
       text-align: center;
       color: #4286f4;
+    `
+    const LinkLogin = styled.span`
+        color: #4286f4;
+      margin-left: 10px;
     `
 
     return (
@@ -95,8 +108,12 @@ const SignIn = () => {
                                 helperText={Boolean(touched.password) && errors.password}
                             />
                             <Box height={14} />
+                            <span>Don't have an account?</span>
+                            <NavLink to='/'>
+                                <LinkLogin>Sign Uo</LinkLogin>
+                            </NavLink>
                             <Box height={14} />
-                            <p>Don't have an account?</p>
+                            <Box height={14} />
 
 
                             <Button
