@@ -3,6 +3,7 @@ import {UserAuth} from "../Context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import WelcomeToast from "../Components/Toast/WelcomeToast";
+import Navbar from "../Layout/Navbar";
 
 
 const Dashboard = () => {
@@ -19,6 +20,7 @@ const Dashboard = () => {
     }
     return (
         <>
+            <Navbar/>
             <WelcomeToast message={user.email}/>
             <p>email: {user && user.email}</p>
             <Button variant="contained" onClick={handleLogout}>Logout</Button>
