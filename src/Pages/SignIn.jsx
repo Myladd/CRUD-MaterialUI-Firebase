@@ -35,7 +35,7 @@ const SignIn = () => {
             setIsLoading(false)
         }catch (e) {
             console.log(e.message)
-            setError(e.message)
+            setError("user not found")
             setIsLoading(false)
         }
         formikHelpers.resetForm();
@@ -134,7 +134,7 @@ const SignIn = () => {
                     )}
                 </Formik>
             </SignUpForm>
-            {error? <ErrorToast/>: null}
+            {error? <ErrorToast message={error}/>: null}
         </Container>
     )
 }
