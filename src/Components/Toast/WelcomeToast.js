@@ -16,7 +16,7 @@ const WelcomeToast = (props) => {
         setOpen(false);
     };
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical:'top', horizontal: 'center'} } key={'top' + 'center'}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical:'bottom', horizontal: 'center'} } key={'top' + 'center'}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
                 welcome {props.message}
             </Alert>

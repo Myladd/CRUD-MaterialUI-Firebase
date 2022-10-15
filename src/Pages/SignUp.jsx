@@ -6,9 +6,11 @@ import { object, string } from "yup";
 import styled from "styled-components";
 import {UserAuth} from "../Context/AuthContext";
 import ErrorToast from "../Components/Toast/ErrorToast";
+import Loading from "../Components/Loading/Loading";
 
 const SignUp = () => {
     const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     const initialValues = {
@@ -32,16 +34,22 @@ const SignUp = () => {
 
     const onSubmit = async (values, formikHelpers) => {
         const {email, password, confirmPassword} = values
+        setIsLoading(true)
         if (password === confirmPassword) {
             try {
                 await createUser(email, password)
                 navigate('/Dashboard')
+                setIsLoading(false)
 
             }catch (e) {
-                console.log(e.onmessage)
+                console.log(e)
+                setError("Email already in use!")
+                setIsLoading(false)
+
             }
         }else {
             setError("Wrong Password!")
+            setIsLoading(false)
         }
 
         console.log(values);
@@ -138,7 +146,7 @@ const SignUp = () => {
                             <Box height={14} />
                             <Box height={14} />
 
-                            <Button
+                            {isLoading ? <Loading/> : <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -146,13 +154,13 @@ const SignUp = () => {
                                 fullWidth
                                 disabled={!isValid || !dirty}
                             >
-                                Sign up
-                            </Button>
+                                Sign Up
+                            </Button>}
                         </Form>
                     )}
                 </Formik>
             </SignUpForm>
-            {error? <ErrorToast/>: null}
+            {error? <ErrorToast message={error}/>: null}
         </Container>
     )
 }

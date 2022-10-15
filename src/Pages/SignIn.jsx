@@ -6,10 +6,12 @@ import {NavLink, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {UserAuth} from "../Context/AuthContext";
 import ErrorToast from "../Components/Toast/ErrorToast";
+import Loading from "../Components/Loading/Loading";
 
 const SignIn = () => {
     const {signIn} = UserAuth()
     const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     const initialValues = {
@@ -26,12 +28,15 @@ const SignIn = () => {
 
     const onSubmit = async (values, formikHelpers) => {
         const {email, password} = values
+        setIsLoading(true)
         try {
             await signIn(email, password)
             navigate('/Dashboard')
+            setIsLoading(false)
         }catch (e) {
             console.log(e.message)
             setError(e.message)
+            setIsLoading(false)
         }
         formikHelpers.resetForm();
     }
@@ -109,14 +114,13 @@ const SignIn = () => {
                             />
                             <Box height={14} />
                             <span>Don't have an account?</span>
-                            <NavLink to='/'>
+                            <NavLink to='/Register'>
                                 <LinkLogin>Sign Uo</LinkLogin>
                             </NavLink>
                             <Box height={14} />
                             <Box height={14} />
 
-
-                            <Button
+                            {isLoading ? <Loading/> : <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -125,7 +129,7 @@ const SignIn = () => {
                                 disabled={!isValid || !dirty}
                             >
                                 Sign In
-                            </Button>
+                            </Button>}
                         </Form>
                     )}
                 </Formik>
