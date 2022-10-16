@@ -7,6 +7,8 @@ import styled from "styled-components";
 import {UserAuth} from "../Context/AuthContext";
 import ErrorToast from "../Components/Toast/ErrorToast";
 import Loading from "../Components/Loading/Loading";
+import signUpAnime from "../assets/lottie/106680-login-and-sign-up.json";
+import Lottie from "lottie-react";
 
 const SignUp = () => {
     const [error, setError] = useState("")
@@ -56,6 +58,14 @@ const SignUp = () => {
         console.log(email, password)
     }
 
+    const loadAnimation = {
+        animationData: signUpAnime,
+        autoplay: true,
+        loop: true,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    };
 
     const Container = styled.div`
         width: 100%;
@@ -70,8 +80,11 @@ const SignUp = () => {
 
     `
     const SignUpForm = styled.div`
-      width: 400px;
+      width: 800px;
       padding: 20px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       //border: 1px solid gray;
       border-radius: 15px;
       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -90,75 +103,84 @@ const SignUp = () => {
     return (
         <Container>
             <SignUpForm>
-                <Title>
-                    <Typography variant="h4">
-                        Sign Up
-                    </Typography>
-                </Title>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                >
-                    {({ errors, isValid, touched, dirty }) => (
-                        <Form>
-                            <Field
-                                name="email"
-                                type="email"
-                                as={TextField}
-                                variant="outlined"
-                                color="primary"
-                                label="Email"
-                                fullWidth
-                                error={Boolean(errors.email) && Boolean(touched.email)}
-                                helperText={Boolean(touched.email) && errors.email}
-                            />
+                <div style={{width: "50%"}}>
+                    <Title>
+                        <Typography variant="h4">
+                            Sign Up
+                        </Typography>
+                    </Title>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                    >
+                        {({ errors, isValid, touched, dirty }) => (
+                            <Form>
+                                <Field
+                                    name="email"
+                                    type="email"
+                                    as={TextField}
+                                    variant="outlined"
+                                    color="primary"
+                                    label="Email"
+                                    fullWidth
+                                    error={Boolean(errors.email) && Boolean(touched.email)}
+                                    helperText={Boolean(touched.email) && errors.email}
+                                />
 
-                            <Box height={14} />
-                            <Field
-                                name="password"
-                                type="password"
-                                as={TextField}
-                                variant="outlined"
-                                color="primary"
-                                label="Password"
-                                fullWidth
-                                error={Boolean(errors.password) && Boolean(touched.password)}
-                                helperText={Boolean(touched.password) && errors.password}
-                            />
-                            <Box height={14} />
-                            <Field
-                                name="confirmPassword"
-                                type="password"
-                                as={TextField}
-                                variant="outlined"
-                                color="primary"
-                                label="confirm password"
-                                fullWidth
-                                error={Boolean(errors.confirmPassword) && Boolean(touched.confirmPassword)}
-                                helperText={Boolean(touched.confirmPassword) && errors.confirmPassword}
-                            />
-                            <Box height={14} />
-                            <span>Already have an account</span>
-                            <NavLink to='/'>
-                                <LinkLogin>Login</LinkLogin>
-                            </NavLink>
-                            <Box height={14} />
-                            <Box height={14} />
+                                <Box height={14} />
+                                <Field
+                                    name="password"
+                                    type="password"
+                                    as={TextField}
+                                    variant="outlined"
+                                    color="primary"
+                                    label="Password"
+                                    fullWidth
+                                    error={Boolean(errors.password) && Boolean(touched.password)}
+                                    helperText={Boolean(touched.password) && errors.password}
+                                />
+                                <Box height={14} />
+                                <Field
+                                    name="confirmPassword"
+                                    type="password"
+                                    as={TextField}
+                                    variant="outlined"
+                                    color="primary"
+                                    label="confirm password"
+                                    fullWidth
+                                    error={Boolean(errors.confirmPassword) && Boolean(touched.confirmPassword)}
+                                    helperText={Boolean(touched.confirmPassword) && errors.confirmPassword}
+                                />
+                                <Box height={14} />
+                                <span>Already have an account</span>
+                                <NavLink to='/'>
+                                    <LinkLogin>Login</LinkLogin>
+                                </NavLink>
+                                <Box height={14} />
+                                <Box height={14} />
 
-                            {isLoading ? <Loading/> : <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                                fullWidth
-                                disabled={!isValid || !dirty}
-                            >
-                                Sign Up
-                            </Button>}
-                        </Form>
-                    )}
-                </Formik>
+                                {isLoading ? <Loading/> : <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={!isValid || !dirty}
+                                >
+                                    Sign Up
+                                </Button>}
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div style={{display:"flex", justifyContent:"center"}}>
+                    <Lottie
+                        options={loadAnimation}
+                        height={300}
+                        width={300}
+                        animationData={signUpAnime}/>
+                </div>
             </SignUpForm>
             {error? <ErrorToast message={error}/>: null}
         </Container>

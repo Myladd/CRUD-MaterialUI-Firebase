@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { object, string } from "yup";
@@ -7,6 +7,9 @@ import styled from "styled-components";
 import {UserAuth} from "../Context/AuthContext";
 import ErrorToast from "../Components/Toast/ErrorToast";
 import Loading from "../Components/Loading/Loading";
+import Lottie from 'lottie-react';
+import loginAnime from '../assets/lottie/83168-login-success.json'
+import loading from "../Components/Loading/Loading";
 
 const SignIn = () => {
     const {signIn} = UserAuth()
@@ -41,6 +44,16 @@ const SignIn = () => {
         formikHelpers.resetForm();
     }
 
+        const loadAnimation = {
+            animationData: loginAnime,
+            autoplay: true,
+            loop: true,
+            rendererSettings: {
+                preserveAspectRatio: "xMidYMid slice"
+            }
+        };
+
+
 
     const Container = styled.div`
         width: 100%;
@@ -55,8 +68,9 @@ const SignIn = () => {
 
     `
     const SignUpForm = styled.div`
-      width: 400px;
+      width: 600px;
       padding: 20px 20px;
+      display: flex;
       //border: 1px solid gray;
       border-radius: 15px;
       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -72,67 +86,85 @@ const SignIn = () => {
         color: #4286f4;
       margin-left: 10px;
     `
+    const LottieLogin = styled.div`
+      width: 50%;
+        display: flex;
+      justify-content: center;
+      align-items: center;
+    `
 
     return (
         <Container>
             <SignUpForm>
-                <Title>
-                    <Typography variant="h4">
-                        Sign In
-                    </Typography>
-                </Title>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                >
-                    {({ errors, isValid, touched, dirty }) => (
-                        <Form>
-                            <Field
-                                name="email"
-                                type="email"
-                                as={TextField}
-                                variant="outlined"
-                                color="primary"
-                                label="Email"
-                                fullWidth
-                                error={Boolean(errors.email) && Boolean(touched.email)}
-                                helperText={Boolean(touched.email) && errors.email}
-                            />
+                <div style={{width:"50%"}}>
+                    <Title>
+                        <Typography variant="h4">
+                            Sign In
+                        </Typography>
+                    </Title>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                    >
+                        {({ errors, isValid, touched, dirty }) => (
+                            <Form>
+                                <Field
+                                    name="email"
+                                    type="email"
+                                    as={TextField}
+                                    variant="outlined"
+                                    color="primary"
+                                    label="Email"
+                                    fullWidth
+                                    error={Boolean(errors.email) && Boolean(touched.email)}
+                                    helperText={Boolean(touched.email) && errors.email}
+                                />
 
-                            <Box height={14} />
-                            <Field
-                                name="password"
-                                type="password"
-                                as={TextField}
-                                variant="outlined"
-                                color="primary"
-                                label="Password"
-                                fullWidth
-                                error={Boolean(errors.password) && Boolean(touched.password)}
-                                helperText={Boolean(touched.password) && errors.password}
-                            />
-                            <Box height={14} />
-                            <span>Don't have an account?</span>
-                            <NavLink to='/Register'>
-                                <LinkLogin>Sign Uo</LinkLogin>
-                            </NavLink>
-                            <Box height={14} />
-                            <Box height={14} />
+                                <Box height={14} />
+                                <Field
+                                    name="password"
+                                    type="password"
+                                    as={TextField}
+                                    variant="outlined"
+                                    color="primary"
+                                    label="Password"
+                                    fullWidth
+                                    error={Boolean(errors.password) && Boolean(touched.password)}
+                                    helperText={Boolean(touched.password) && errors.password}
+                                />
+                                <Box height={14} />
+                                <span>Don't have an account?</span>
+                                <NavLink to='/Register'>
+                                    <LinkLogin>Sign Uo</LinkLogin>
+                                </NavLink>
+                                <Box height={14} />
+                                <Box height={14} />
 
-                            {isLoading ? <Loading/> : <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                                fullWidth
-                                disabled={!isValid || !dirty}
-                            >
-                                Sign In
-                            </Button>}
-                        </Form>
-                    )}
-                </Formik>
+                                {isLoading ? <Loading/> : <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    fullWidth
+                                    disabled={!isValid || !dirty}
+                                >
+                                    Sign In
+                                </Button>}
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <LottieLogin>
+                    <div>
+                        <Lottie
+                            options={loadAnimation}
+                            height={400}
+                            width={400}
+                         animationData={loginAnime}/>
+
+                    </div>
+                </LottieLogin>
             </SignUpForm>
             {error? <ErrorToast message={error}/>: null}
         </Container>
