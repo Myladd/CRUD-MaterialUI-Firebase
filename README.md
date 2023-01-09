@@ -1,8 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-<img align="right" src="https://ibb.co/9VRjnKd" width="250"/>
-
+<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/6qZdNrx6/2-Indian-Man.png' border='0' alt='2-Indian-Man'/></a>
 
 ## Available Scripts
 
