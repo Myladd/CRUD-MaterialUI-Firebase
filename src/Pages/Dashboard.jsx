@@ -1,18 +1,17 @@
 import React from 'react'
-import Button from '@mui/material/Button';
 import WelcomeToast from "../Components/Toast/WelcomeToast";
 import Navbar from "../Layout/Navbar";
 import Table from "../Components/Table/Table";
-
+import Footer from "../Layout/Footer";
 
 const Dashboard = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <Table/>
-            <WelcomeToast/>
-
+            <WelcomeToast message={"welcome"} />
+            <Footer/>
         </>
     )
 
