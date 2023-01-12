@@ -17,6 +17,8 @@ export default function SkeletonTable() {
                     <TableCell align="center"><Skeleton variant="rounded" animation="wave" width={100} height={40} /></TableCell>
                     <TableCell align="center"><Skeleton variant="rounded" animation="wave" width={100} height={40} /></TableCell>
                     <TableCell align="center"><Skeleton variant="rounded" animation="wave" width={100} height={40} /></TableCell>
+                    <TableCell align="center"><Skeleton variant="rounded" animation="wave" width={100} height={40} /></TableCell>
+                    <TableCell align="center"><Skeleton variant="rounded" animation="wave" width={100} height={40} /></TableCell>
                     <TableCell align="right">
                         <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
                             <Skeleton variant="rounded" animation="wave" width={100} height={40} />

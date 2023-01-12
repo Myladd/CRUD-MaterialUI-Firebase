@@ -11,7 +11,8 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import {collection, getDocs, deleteDoc, doc, addDoc, serverTimestamp} from "firebase/firestore";
-import {db} from "../../firebase";
+import {ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {db, storage} from "../../firebase";
 import DeleteLoading from "../Loading/DeleteLoading";
 import SkeletonTable from "../Skeleton/Skeleton";
 import WelcomeToast from "../Toast/WelcomeToast";
@@ -26,6 +27,8 @@ import Loading from "../Loading/Loading";
 
 const ProductTable = () => {
     const [data, setData] = useState([])
+    const [file, setFile] = useState("")
+    const [imgUrl, setImgUrl] = useState("")
     const [dataId, setDataId] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [skeleton, setSkeleton] = useState(false)
@@ -54,6 +57,41 @@ const ProductTable = () => {
 
     // console.log(data)
 
+    useEffect(() => {
+        const uploadFile = () => {
+            const name = new Date().getTime() + file.name
+            const storageRef = ref(storage, name);
+
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case 'paused':
+                            console.log('Upload is paused');
+                            break;
+                        case 'running':
+                            console.log('Upload is running');
+                            break;
+                        default:
+                            break
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                },
+                () => {
+
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        setImgUrl(downloadURL)
+                    });
+                }
+            );
+        }
+        file && uploadFile()
+    }, [file])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -79,6 +117,7 @@ const ProductTable = () => {
         try {
             const resData = await addDoc(collection(db, "phones"), {
                 ...addData,
+                image: imgUrl,
                 timeStamp: serverTimestamp()
             })
             console.log(resData)
@@ -135,6 +174,7 @@ const ProductTable = () => {
                         </DialogContentText>
                         <Stack spacing={4} style={{marginBottom: "30px"}}>
                             <TextField
+                                onChange={(e) => setFile(e.target.files[0])}
                                 autoFocus
                                 margin="dense"
                                 id="file"
@@ -219,6 +259,7 @@ const ProductTable = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="center">#</TableCell>
+                                    <TableCell align="center">Image</TableCell>
                                     <TableCell align="center">Name</TableCell>
                                     <TableCell align="center">Color</TableCell>
                                     <TableCell align="center">Storage</TableCell>
@@ -235,6 +276,9 @@ const ProductTable = () => {
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
                                                 <TableCell component="th" scope="row" align="center">{i+1}</TableCell>
+                                                <TableCell align="center">
+                                                    <img src={product.image} alt="img" width="50px"/>
+                                                </TableCell>
                                                 <TableCell align="center">{product.name}</TableCell>
                                                 <TableCell align="center">{product.color}</TableCell>
                                                 <TableCell align="center">{product.storage}</TableCell>
